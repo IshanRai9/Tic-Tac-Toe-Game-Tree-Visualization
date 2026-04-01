@@ -20,7 +20,7 @@ class MoveRequest(BaseModel):
     board: list[list[int]]
     player: int
     algo: str
-    max_depth: int = 4
+    max_depth: int = 6
 
 @app.post("/api/best_move")
 def get_best_move_endpoint(request: MoveRequest):

@@ -117,6 +117,7 @@ function App() {
   const [winner, setWinner] = useState<string | null>(null);
   const [treeContext, setTreeContext] = useState<TreeNodeData | null>(null);
   const [isAiComputing, setIsAiComputing] = useState(false);
+  const [maxDepth, setMaxDepth] = useState<number>(6);
 
   const resetGame = () => {
     setBoard([[0, 0, 0], [0, 0, 0], [0, 0, 0]]);
@@ -146,7 +147,7 @@ function App() {
       const resp = await fetch('http://localhost:8000/api/best_move', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ board, player: -1, algo })
+        body: JSON.stringify({ board, player: -1, algo, max_depth: maxDepth })
       });
       const data = await resp.json();
       
@@ -191,7 +192,7 @@ function App() {
   return (
     <div className="dashboard">
       <div className="left-panel">
-        <h1 className="title">Game Tree Viz</h1>
+        <h1 className="title">Tic Tac Toe Visualizer</h1>
         
         <div className="board">
           {board.map((row, r) => row.map((cell, c) => (
@@ -216,6 +217,17 @@ function App() {
               <option value="minimax">Minimax</option>
               <option value="alpha_beta">Alpha-Beta Pruning</option>
             </select>
+          </label>
+
+          <label>
+            Search Depth: {maxDepth}
+            <input 
+              type="range" 
+              min="1" 
+              max="9" 
+              value={maxDepth} 
+              onChange={e => setMaxDepth(parseInt(e.target.value))} 
+            />
           </label>
           
           <button onClick={resetGame}>Restart Game</button>

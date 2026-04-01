@@ -1,5 +1,6 @@
 import numpy as np
 import math
+import random
 
 class TreeNode:
     def __init__(self, board, player, move=None):
@@ -31,7 +32,7 @@ class TreeNode:
             "children": [child.to_dict() for child in self.children]
         }
 
-def get_best_move(game, algo="minimax", max_depth=4):
+def get_best_move(game, algo="minimax", max_depth=9):
     """
     Wrapper function to get the best move and the generated decision tree.
     """
@@ -46,7 +47,7 @@ def get_best_move(game, algo="minimax", max_depth=4):
         
     return move, root
 
-def minimax(game, depth, is_maximizing, max_depth=4, current_node=None):
+def minimax(game, depth, is_maximizing, max_depth=9, current_node=None):
     winner = game.check_winner()
     
     if winner is not None:
@@ -61,6 +62,7 @@ def minimax(game, depth, is_maximizing, max_depth=4, current_node=None):
         return current_node.score, None
         
     valid_moves = game.get_valid_moves()
+    random.shuffle(valid_moves)
     
     if is_maximizing:
         best_score = -math.inf
@@ -99,7 +101,7 @@ def minimax(game, depth, is_maximizing, max_depth=4, current_node=None):
         current_node.best_move = best_move
         return best_score, best_move
 
-def alpha_beta(game, depth, alpha, beta, is_maximizing, max_depth=4, current_node=None):
+def alpha_beta(game, depth, alpha, beta, is_maximizing, max_depth=9, current_node=None):
     current_node.alpha = alpha
     current_node.beta = beta
     
@@ -115,6 +117,7 @@ def alpha_beta(game, depth, alpha, beta, is_maximizing, max_depth=4, current_nod
         return current_node.score, None
         
     valid_moves = game.get_valid_moves()
+    random.shuffle(valid_moves)
     
     if is_maximizing:
         best_score = -math.inf
